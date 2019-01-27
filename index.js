@@ -98,12 +98,16 @@ app.get('/api/helloworld', (req, res) => {
 });
 
 app.post('/session/auth', (req, res, next) => {
+    // Attempt to create a new user with the email will serving as the ID of the user.
+    // If there is no user matching the ID, we create one but if there is one we skip
+    // creating and go straight into fetching the chat room for that user
+
     let createdUser = null;
 
     chatkit
         .createUser({
-            id: "erdem@gmail.com",
-            name: "erdem",
+            id: req.body.email,
+            name: req.body.name,
         })
         .then(user => {
             createdUser = user;
@@ -113,7 +117,7 @@ app.post('/session/auth', (req, res, next) => {
         .catch(err => {
             if (err.error === 'services/chatkit/user_already_exists') {
                 createdUser = {
-                    id: "erdem@gmail.com",
+                    id: req.body.email,
                 };
 
                 getUserRoom(req, res, next, true);
@@ -166,19 +170,7 @@ app.post('/session/auth', (req, res, next) => {
                 next(new Error(`ERROR: ${err.error_type} - ${err.error_description}`));
             });
     }
-/*console.log("he")
-    try{
-        chatkit
-            .createUser({
-                id: "erdem@gmail.com",
-                name: "erdem",
-            })
-    }catch(e){
-        console.log("before error")
-        console.log(e)
-    }*/
-
-   });
+});
 
 
 app.get('/', (req, res) => {

@@ -5,7 +5,7 @@ const router = express.Router();
 myController = new tdg();
 
 router.post("/addclient", function (req, res) {
-    let data = req.body.data;
+    let data = req.body;
     console.log(data);
     res.setHeader('Content-Type', 'application/json');
     myController.registerClient(data, function (msg) {
