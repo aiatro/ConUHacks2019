@@ -133,6 +133,78 @@ class tdg {
         })
     }
 
+    login(email,password,callback) {
+        let sql = "SELECT * FROM mentor WHERE ('" + email + "' , '" + password + "') )" ;
+        console.log(sql);
+        this.runQuery(function (conn, completedQuery) {
+            conn.query(sql, (err, rows, fields) => {
+                if (!err) {
+                    if (rows.length > 0) {
+                        let msg = {};
+                        msg.success = "true";
+                        msg.message = "no message";
+                        msg.users = rows;
+                        callback(msg);
+                    }
+                    else {
+                        let msg = {};
+                        msg.success = "false";
+                        if (rows.messages || rows.message == "") {
+                            msg.message = "empty client table";
+                        }
+                        else {
+                            msg.message = rows.message;
+                        }
+                        callback(msg);
+                    }
+                }
+                else {
+                    // console.log(err);
+                    let msg = {};
+                    msg.success = "false";
+                    msg.message = err.sqlMessage;
+                    callback(msg);
+                }
+                completedQuery("fetch clients");
+            })
+        })
+
+        let sql2 = "SELECT * FROM client WHERE ('" + email + "' , '" + password + "') )" ;
+        console.log(sql);
+        this.runQuery(function (conn, completedQuery) {
+            conn.query(sql2, (err, rows, fields) => {
+                if (!err) {
+                    if (rows.length > 0) {
+                        let msg = {};
+                        msg.success = "true";
+                        msg.message = "no message";
+                        msg.users = rows;
+                        callback(msg);
+                    }
+                    else {
+                        let msg = {};
+                        msg.success = "false";
+                        if (rows.messages || rows.message == "") {
+                            msg.message = "empty client table";
+                        }
+                        else {
+                            msg.message = rows.message;
+                        }
+                        callback(msg);
+                    }
+                }
+                else {
+                    // console.log(err);
+                    let msg = {};
+                    msg.success = "false";
+                    msg.message = err.sqlMessage;
+                    callback(msg);
+                }
+                completedQuery("fetch clients");
+            })
+        })
+    }
+
     //get all mentors
     fetchmentor(callback) {
         let sql = 'SELECT id, name, age, email, education, rating, location FROM mentor';

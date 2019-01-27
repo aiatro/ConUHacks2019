@@ -73,15 +73,48 @@ app.use(bodyParser.urlencoded({
 //     res.sendFile(path.join(__dirname + "/client/build/index.html"));
 // });
 
+app.post('/addmentor', (req, res) => {
+    let data = req.body.data;
+    console.log(data);
+    let createdUser = null;
+
+    chatkit
+        .createUser({
+            id: data.email,
+            name: data.name,
+        })
+    res.setHeader('Content-Type', 'application/json');
+    myController.registerMentor(data, function (msg) {
+        res.send(JSON.stringify(msg));
+    });
+
+});
 app.post('/addclient', (req, res) => {
     let data = req.body.data;
     console.log(data);
+    let createdUser = null;
+
+    chatkit
+        .createUser({
+            id: data.email,
+            name: data.name,
+        })
     res.setHeader('Content-Type', 'application/json');
     myController.registerClient(data, function (msg) {
         res.send(JSON.stringify(msg));
     });
 
 });
+
+app.post('/login', (req,res) =>{
+    let data = req.body.data;
+    console.log(data)
+    res.setHeader('Content-Type', 'application/json');
+    myController.login(data.email,data.password, function (msg) {
+        res.send(JSON.stringify(msg));
+    });
+
+})
 
 app.get('/api/helloworld', (req, res) => {
     const result = "Hello World"
@@ -97,87 +130,16 @@ app.get('/api/helloworld', (req, res) => {
 
 });
 
-app.post('/session/auth', (req, res, next) => {
-    let createdUser = null;
-
+app.post('/createRoom', (req, res) => {
+    let data = req.body.data;
     chatkit
-        .createUser({
-            id: "erdem@gmail.com",
-            name: "erdem",
+        .createRoom({
+            creatorId: data.roomid,
+            isPrivate: true,
+            name: data.roomname,
+            userIds: ['Chatkit-dashboard', data.roomid],
         })
-        .then(user => {
-            createdUser = user;
-
-            getUserRoom(req, res, next, false);
-        })
-        .catch(err => {
-            if (err.error === 'services/chatkit/user_already_exists') {
-                createdUser = {
-                    id: "erdem@gmail.com",
-                };
-
-                getUserRoom(req, res, next, true);
-                return;
-            }
-
-            next(err);
-        });
-
-    function getUserRoom(req, res, next, existingAccount) {
-        const name = createdUser.name;
-        const email = createdUser.email;
-
-        // Get the list of rooms the user belongs to. Check within that room list for one whos
-        // name matches the users ID. If we find one, we return that as the response, else
-        // we create the room and return it as the response.
-
-        chatkit
-            .getUserRooms({
-                userID: createdUser.id,
-            })
-            .then(rooms => {
-                let clientRoom = null;
-
-                // Loop through user rooms to see if there is already a room for the client
-                clientRoom = rooms.filter(room => {
-                    return room.name === createdUser.id;
-                });
-
-                if (clientRoom && clientRoom.id) {
-                    return res.json(clientRoom);
-                }
-
-                // Since we can't find a client room, we will create one and return that.
-                chatkit
-                    .createRoom({
-                        creatorId: createdUser.id,
-                        isPrivate: true,
-                        name: createdUser.id,
-                        userIds: ['Chatkit-dashboard',createdUser.id],
-                    })
-                    .then(room => res.json(room))
-                    .catch(err => {
-                        console.log(err);
-                        next(new Error(`${err.error_type} - ${err.error_description}`));
-                    });
-            })
-            .catch(err => {
-                console.log(err);
-                next(new Error(`ERROR: ${err.error_type} - ${err.error_description}`));
-            });
-    }
-/*console.log("he")
-    try{
-        chatkit
-            .createUser({
-                id: "erdem@gmail.com",
-                name: "erdem",
-            })
-    }catch(e){
-        console.log("before error")
-        console.log(e)
-    }*/
-
+    res.json("room Created");
    });
 
 

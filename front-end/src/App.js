@@ -10,6 +10,7 @@ import connect from "react-redux/es/connect/connect";
 import axios from 'axios'
 import Navbar from './components/navbar.jsx'
 import Topbar from './components/topbar.jsx'
+import Login from './components/login'
 
 
 class App extends Component {
@@ -26,7 +27,7 @@ class App extends Component {
             <Switch>
             <Route exact path="/" component={HomePage} />
             <Route exact path="/register" component={Registration} />
-            <Route exact path="/login" component={Registration} />
+            <Route exact path="/login" component={Login} />
             /*<Redirect from="*" to="/404" />*/
             </Switch>
              </div>
