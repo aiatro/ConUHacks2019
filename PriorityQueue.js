@@ -1,3 +1,4 @@
+const _ = require('lodash');
 class PriorityUserQueue{
      
     constructor(nodes){
@@ -6,11 +7,13 @@ class PriorityUserQueue{
         }
         else{
             this.nodes=nodes;
+            this.nodes = _.sortBy(this.nodes, ['priority'], ['asc']);
         }
     }
 
     add(node){
         this.nodes.push(node);
+        this.nodes = _.sortBy(this.nodes, ['priority'], ['asc']);
     }
 
 }
