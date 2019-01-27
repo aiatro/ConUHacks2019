@@ -47,8 +47,8 @@ var Q = new PriorityUserQueue(nodes);
 Q.add(new QueueNode(u3));
 //console.log('hello');
 for (var i = 0; i < Q.nodes.length; i++) {
-   // console.log(Q.nodes[i].priority);
-   // console.log('hello');
+    // console.log(Q.nodes[i].priority);
+    // console.log('hello');
 }
 
 
@@ -83,7 +83,7 @@ app.post('/addclient', (req, res) => {
 
 });
 
-    app.get('/api/helloworld', (req, res) => {
+app.get('/api/helloworld', (req, res) => {
     const result = "Hello World"
     var u1 = new User('a','a','a','a','Longueuil','a');
     var u2 = new User('a','a','a','a','Saint-Lambert','a');
@@ -94,14 +94,91 @@ app.post('/addclient', (req, res) => {
     var Q = new PriorityUserQueue(nodes);
     Q.add(new QueueNode(u3));
     setTimeout(function(){ res.json(Q.nodes) }, 2000);
-    
+
 });
 
-app.post('/session/auth', (req, res) => {
-    const authData = chatkit.authenticate({ userId: req.query.user_id });
+app.post('/session/auth', (req, res, next) => {
+    let createdUser = null;
 
-    res.status(authData.status).send(authData.body);
-});
+    chatkit
+        .createUser({
+            id: "erdem@gmail.com",
+            name: "erdem",
+        })
+        .then(user => {
+            createdUser = user;
+
+            getUserRoom(req, res, next, false);
+        })
+        .catch(err => {
+            if (err.error === 'services/chatkit/user_already_exists') {
+                createdUser = {
+                    id: "erdem@gmail.com",
+                };
+
+                getUserRoom(req, res, next, true);
+                return;
+            }
+
+            next(err);
+        });
+
+    function getUserRoom(req, res, next, existingAccount) {
+        const name = createdUser.name;
+        const email = createdUser.email;
+
+        // Get the list of rooms the user belongs to. Check within that room list for one whos
+        // name matches the users ID. If we find one, we return that as the response, else
+        // we create the room and return it as the response.
+
+        chatkit
+            .getUserRooms({
+                userID: createdUser.id,
+            })
+            .then(rooms => {
+                let clientRoom = null;
+
+                // Loop through user rooms to see if there is already a room for the client
+                clientRoom = rooms.filter(room => {
+                    return room.name === createdUser.id;
+                });
+
+                if (clientRoom && clientRoom.id) {
+                    return res.json(clientRoom);
+                }
+
+                // Since we can't find a client room, we will create one and return that.
+                chatkit
+                    .createRoom({
+                        creatorId: createdUser.id,
+                        isPrivate: true,
+                        name: createdUser.id,
+                        userIds: ['Chatkit-dashboard',createdUser.id],
+                    })
+                    .then(room => res.json(room))
+                    .catch(err => {
+                        console.log(err);
+                        next(new Error(`${err.error_type} - ${err.error_description}`));
+                    });
+            })
+            .catch(err => {
+                console.log(err);
+                next(new Error(`ERROR: ${err.error_type} - ${err.error_description}`));
+            });
+    }
+/*console.log("he")
+    try{
+        chatkit
+            .createUser({
+                id: "erdem@gmail.com",
+                name: "erdem",
+            })
+    }catch(e){
+        console.log("before error")
+        console.log(e)
+    }*/
+
+   });
 
 
 app.get('/', (req, res) => {
