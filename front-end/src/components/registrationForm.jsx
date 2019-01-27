@@ -101,7 +101,28 @@ class RegistrationForm extends Component {
             }
         }else{
             this.setState({loading:true})
-            let data={
+            if(type==='Mentor'){
+                let data={
+                    name: firstName+' '+lastName,
+                    age: age,
+                    email: email,
+                    password: password,
+                    education:100,
+                    rating: 5,
+                    location: city
+                }
+                axios.post('/addmentor',{data:data}).then(
+                    function (response, err) {
+                        console.log(response)
+                        if(response.data){
+                            this.setState({loading:false})
+                            this.props.history.push(`/login`);
+                        }
+                    }.bind(this)
+                );
+
+            }else{
+                let data={
                     name: firstName+' '+lastName,
                     age: age,
                     email: email,
@@ -109,17 +130,17 @@ class RegistrationForm extends Component {
                     score:100,
                     rating: 5,
                     location: city
+                }
+                axios.post('/addclient',{data:data}).then(
+                    function (response, err) {
+                        console.log(response)
+                        if(response.data){
+                            this.setState({loading:false})
+                            this.props.history.push(`/login`);
+                        }
+                    }.bind(this)
+                );
             }
-            axios.post('/addclient',{data:data}).then(
-                function (response, err) {
-                    console.log(response)
-                    if(response.data){
-                        this.setState({loading:false})
-                        this.props.history.push(`/login`);
-                    }
-                }.bind(this)
-            );
-            console.log(data)
         }
     }
     chatroom=()=>{
@@ -235,7 +256,7 @@ class RegistrationForm extends Component {
                     error={this.state.errorConfirmPassword}
                     onChange={this.changeConfirmPassword}
                 />
-                <Button  fluid size='large' onClick={this.chatroom}>
+                <Button  fluid size='large' onClick={this.register}>
                     Submit
                 </Button>
             </Form>

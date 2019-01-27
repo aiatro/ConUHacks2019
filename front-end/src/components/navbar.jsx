@@ -15,6 +15,7 @@ class Navbar extends Component {
     }
     handleItemClick = (e, { name }) => this.props.dispatch({type: 'activeMenuItem', data: name});
     registeration =()=>{ this.props.history.push(`/register`);}
+    login=()=>{this.props.history.push(`/login`);}
 
     render() {
         const { activeMenuItem } = this.props;
@@ -76,7 +77,7 @@ class Navbar extends Component {
                             name='Login'
                             active={activeMenuItem === 'Login'}
                             fitted='Login'
-                            onClick={this.handleItemClick}
+                            onClick={(e,{name})=>{this.handleItemClick(e,{name});this.login();}}
                         >
                             Login
                         </Menu.Item>
