@@ -6,10 +6,20 @@ import {Redirect } from 'react-router'
 import { Route, Switch ,withRouter} from 'react-router-dom';
 import HomePage from './components/homepage.jsx'
 import connect from "react-redux/es/connect/connect";
+import axios from 'axios'
 
 
 class App extends Component {
     componentDidMount(){
+         axios.get('/api/helloworld').then(
+            function (response, err) {
+                console.log(response)
+                if(response.data){
+                    this.props.dispatch({type: 'addUserProfile', data: response.data
+                    });
+                }
+            }.bind(this)
+        );
         /*this.props.dispatch({type: 'addUserProfile', data: 'hello' });*/
     }
     render() {
