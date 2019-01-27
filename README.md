@@ -1,5 +1,5 @@
-# ConUHacksIV 🐝⚡
-# Canadian 🍁 Heratige - Themed Challenge
+# ConUHacksIV 
+# Canadian Heratige - Themed Challenge
 ## Challenge Objective
 Create a web or mobile app to help Anglophone Quebecers navigate the majoritarily Francophone province of Quebec.
 
