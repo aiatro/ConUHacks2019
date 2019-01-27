@@ -3,7 +3,6 @@ const User = require('./User.js');
 
 class QueueNode{
     
-<<<<<<< Updated upstream
     constructor(user,priority){
         this.user = user;
         this.priority = priority;
@@ -16,19 +15,5 @@ class QueueNode{
     
        
     }
-=======
-    constructor(User) {
-        this.GeoData = new GeoData();
-        var info = {};
-    }
-
-
-   getPriority(callback){
-       this.GeoData.getPriority(User.city, function (msg) {
-           info.push(msg);
-           callback(msg);
-       });
-   }
->>>>>>> Stashed changes
 }
 module.exports = QueueNode;

@@ -67,7 +67,6 @@ app.use(require('./routes'));
 //     res.sendFile(path.join(__dirname + "/client/build/index.html"));
 // });
 
-<<<<<<< Updated upstream
     app.get('/api/helloworld', (req, res) => {
     const result = "Hello World"
     var u1 = new User('a','a','a','a','Longueuil','a');
@@ -81,8 +80,6 @@ app.use(require('./routes'));
     setTimeout(function(){ res.json(Q.nodes) }, 2000);
     
 });
-=======
->>>>>>> Stashed changes
 
 
 const port = 5000;
