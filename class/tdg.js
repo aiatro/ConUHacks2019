@@ -134,7 +134,7 @@ class tdg {
     }
 
     login(email,password,callback) {
-        let sql = "SELECT * FROM mentor WHERE ('" + email + "' , '" + password + "') )" ;
+        let sql = "SELECT * FROM mentor WHERE (email = '" + email + "' AND password = '" + password + "') )" ;
         console.log(sql);
         this.runQuery(function (conn, completedQuery) {
             conn.query(sql, (err, rows, fields) => {
@@ -169,7 +169,7 @@ class tdg {
             })
         })
 
-        let sql2 = "SELECT * FROM client WHERE ('" + email + "' , '" + password + "') )" ;
+        let sql2 = "SELECT * FROM client WHERE (email = '" + email + "' AND password = '" + password + "') )";
         console.log(sql);
         this.runQuery(function (conn, completedQuery) {
             conn.query(sql2, (err, rows, fields) => {
