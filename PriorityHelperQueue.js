@@ -1,5 +1,4 @@
-const _ = require('lodash');
-class PriorityUserQueue{
+class PriorityHelperQueue{
      
     constructor(nodes){
         if(nodes == null){
@@ -7,17 +6,16 @@ class PriorityUserQueue{
         }
         else{
             this.nodes=nodes;
-            this.nodes = _.sortBy(this.nodes, ['priority'], ['asc']);
         }
     }
 
     add(node){
         this.nodes.push(node);
-        this.nodes = _.sortBy(this.nodes, ['priority'], ['asc']);
     }
+    
     removeFromFront(){
         return this.nodes.shift();
     }
 
 }
-module.exports = PriorityUserQueue;
+module.exports = PriorityHelperQueue;
