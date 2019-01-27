@@ -105,3 +105,9 @@ venv.bak/
 
 #PyCharm IDEA
 .idea/
+
+package.json
+package-lock.json
+front-end/package.json
+front-end/package-lock.json
+node_modules/
