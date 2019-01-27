@@ -16,10 +16,8 @@ const app = express();
     var nodes = [n2,n1];
     var Q = new PriorityUserQueue(nodes);
     Q.add(new QueueNode(u3));
-    for (var i=0; i<Q.nodes.length; i++){
-        console.log(Q.nodes[i].priority);
-    }
-    res.json(Q.nodes);
+    setTimeout(function(){ res.json(Q.nodes) }, 2000);
+    
 });
 
 
