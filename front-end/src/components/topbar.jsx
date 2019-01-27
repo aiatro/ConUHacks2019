@@ -20,6 +20,7 @@ class Topbar extends Component {
         return (
             <div className='main-container-topBar'>
                 <Image className='canadaImage' src={Canada} size='small' />
+                <div className='topbar-text'>{this.props.userProfile? this.props.userProfile : 'Erdem'}</div>
                </div>)
     }
 }

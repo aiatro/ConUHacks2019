@@ -13,7 +13,9 @@ const reducers = combineReducers({
     Reducers,
 });
 const store = createStore(reducers);
-
+if(localStorage.jwtToken) {
+    store.dispatch({type: 'addUserProfile', data: JSON.parse(localStorage.getItem('jwtToken'))})
+}
 /*store.dispatch({type: 'addUserProfile', data: JSON.parse(localStorage.getItem('jwtToken'))})*/
 
 ReactDOM.render(
