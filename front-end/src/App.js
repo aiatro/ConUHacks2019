@@ -5,30 +5,32 @@ import 'antd/dist/antd.css';
 import {Redirect } from 'react-router'
 import { Route, Switch ,withRouter} from 'react-router-dom';
 import HomePage from './components/homepage.jsx'
+import Registration from './components/registration.jsx'
 import connect from "react-redux/es/connect/connect";
 import axios from 'axios'
+import Navbar from './components/navbar.jsx'
+import Topbar from './components/topbar.jsx'
 
 
 class App extends Component {
     componentDidMount(){
-         axios.get('/api/helloworld').then(
-            function (response, err) {
-                console.log(response)
-                if(response.data){
-                    this.props.dispatch({type: 'addUserProfile', data: response.data
-                    });
-                }
-            }.bind(this)
-        );
         /*this.props.dispatch({type: 'addUserProfile', data: 'hello' });*/
     }
     render() {
         console.log(this.props.userProfile)
-        return (
+        return ( //sds
+            <Fragment>
+            <Topbar />
+            <div className='main-container-app'>
+            <Navbar />
             <Switch>
             <Route exact path="/" component={HomePage} />
+            <Route exact path="/register" component={Registration} />
+            <Route exact path="/login" component={Registration} />
             /*<Redirect from="*" to="/404" />*/
             </Switch>
+             </div>
+            </Fragment>
     );
     }
 }
