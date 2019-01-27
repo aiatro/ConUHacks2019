@@ -14,7 +14,7 @@ class HomePage extends Component {
     }
 
     render() {
-       return (<div> Hello World!</div>)
+       return (<div>{this.props.userProfile}</div>)
         }
 }
 function mapStateToProps(state){
